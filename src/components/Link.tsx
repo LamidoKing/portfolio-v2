@@ -1,9 +1,9 @@
 import * as React from "react"
-import clsx from "clsx"
-import { useRouter } from "next/router"
 import NextLink, { LinkProps as NextLinkProps } from "next/link"
 import MuiLink, { LinkProps as MuiLinkProps } from "@mui/material/Link"
 import { styled } from "@mui/material/styles"
+// import clsx from "clsx"
+// import { useRouter } from "next/router"
 
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled("a")({})
@@ -63,20 +63,20 @@ const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(
   ref
 ) {
   const {
-    activeClassName = "active",
+    // activeClassName = "active",
     as: linkAs,
-    className: classNameProps,
+    className,
     href,
     noLinkStyle,
     role, // Link don't have roles.
     ...other
   } = props
 
-  const router = useRouter()
-  const pathname = typeof href === "string" ? href : href.pathname
-  const className = clsx(classNameProps, {
-    [activeClassName]: router.pathname === pathname && activeClassName,
-  })
+  // const router = useRouter()
+  // const pathname = typeof href === "string" ? href : href.pathname
+  // const className = clsx(classNameProps, {
+  //   [activeClassName]: router.pathname === pathname && activeClassName,
+  // })
 
   const isExternal =
     typeof href === "string" &&

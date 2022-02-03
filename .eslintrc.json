@@ -11,7 +11,7 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "plugins": ["sonarjs"],
+  "plugins": ["sonarjs", "testing-library"],
   "rules": {
     "semi": 0,
     "import/imports-first": ["error", "absolute-first"],
