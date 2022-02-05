@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/ee5b4e6ea6d641b386f708bec368138e)](https://www.codacy.com/gh/LamidoKing/portfolio-v2/dashboard?utm_source=github.com&utm_medium=referral&utm_content=LamidoKing/portfolio-v2&utm_campaign=Badge_Grade)
+
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
