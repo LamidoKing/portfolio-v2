@@ -57,16 +57,17 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v1-deps-{{ .Branch }}
-            - v1-deps
+            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-
+            
       - run:
           name: Install Dependencies
-          command: yarn install --frozen-lockfile
+          command: yarn install
       - save_cache:
-          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
-            - ~/.cache ## cache both yarn and Cypress!
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
       - run:
           name: Build App
           command: yarn build
@@ -74,6 +75,7 @@ jobs:
       - run:
           name: Running E2E tests with cypress reporter
           command: yarn e2e:headless
+
       - store_test_results:
           path: cypress/results
 
