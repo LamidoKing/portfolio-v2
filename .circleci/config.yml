@@ -11,6 +11,7 @@ jobs:
 
     steps:
       - checkout
+      - cypress/install
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
@@ -63,11 +64,9 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - cypress/install:
-          build: yarn build
       - cypress/run:
           requires:
-            - cypress/install
+            - build
           store_artifacts: true
           record: true
           post-steps:
