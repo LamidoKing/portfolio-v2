@@ -64,7 +64,6 @@ workflows:
     jobs:
       - build
       - cypress/install:
-          yarn: true
           build: yarn build
       - cypress/run:
           requires:
