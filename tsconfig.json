@@ -14,8 +14,15 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "types": ["jest"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "jest.config.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "jest.config.ts",
+    "cypress/support/commands.js"
+  ],
   "exclude": ["node_modules"]
 }
