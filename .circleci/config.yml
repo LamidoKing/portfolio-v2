@@ -1,14 +1,11 @@
 version: 2.1
 orbs:
   coverage-reporter: codacy/coverage-reporter@12.1.0
+  cypress: cypress-io/cypress@1.29.0
 jobs:
   build:
     docker:
       - image: circleci/node:12
-      - image: cypress/base:14.16.0
-        environment:
-          ## this enables colors in the output
-          TERM: xterm
 
     working_directory: ~/repo
 
@@ -40,8 +37,6 @@ jobs:
           name: Run test
           command: yarn test:ci --coverage
 
-
-
       - store_test_results:
           path: coverage
 
@@ -51,18 +46,8 @@ jobs:
       - coverage-reporter/send_report:
           coverage-reports: 'coverage/clover.xml, coverage/lcov.info'
           project-token: e269adafdb06498187ba1cdc6279ed73
-          
-      - run:
-          name: Running E2E tests with cypress reporter
-          command: yarn e2e:headless
-      - store_test_results:
-          path: cypress/results
-
-      - store_artifacts:
-          path: cypress/videos
-
-      - store_artifacts:
-          path: cypress/screenshots
+  
+   
 
   deploy:
     machine:
@@ -78,6 +63,18 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - cypress/install:
+          yarn: true
+          build: yarn build
+      - cypress/run:
+          requires:
+            - cypress/install
+          store_artifacts: true
+          record: true
+          post-steps:
+            - store_test_results:
+                path: cypress/results
+          command: yarn e2e:headless
       - deploy:
           requires:
             - build
