@@ -11,7 +11,8 @@ jobs:
 
     steps:
       - checkout
-      - cypress/install
+      - cypress/install:
+          yarn: true
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
