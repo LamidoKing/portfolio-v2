@@ -26,19 +26,15 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-          name: Build App
-          command: yarn build
-
-      - run:
           name: Run Lint
-          command: yarn eslint
+          command: yarn lint
 
       - run:
           name: Run test
           command: yarn test:ci --coverage
 
       - store_test_results:
-          path: coverage
+          path: test-results
 
       - store_artifacts:
           path: coverage
@@ -46,8 +42,6 @@ jobs:
       - coverage-reporter/send_report:
           coverage-reports: 'coverage/clover.xml, coverage/lcov.info'
           project-token: e269adafdb06498187ba1cdc6279ed73
-  
-   
 
   deploy:
     machine:
@@ -55,29 +49,63 @@ jobs:
 
     steps:
       - run:
-          command: curl -X POST -d {} ${deploy_endpoint}
-  
+          name: Netlify Deploy
+          command: curl -X POST -d {} ${deploy_hook_netlify}
+
+      - run:
+          name: Vercel Deploy
+          command: curl -X POST -d {} ${deploy_hook_vercel}
+
+  deploy-prod:
+    machine:
+      image: ubuntu-1604:202007-01
+
+    steps:
+      - run:
+          name: Netlify Deploy
+          command: curl -X POST -d {} ${deploy_hook_netlify_prod}
+
+      - run:
+          name: Vercel Deploy
+          command: curl -X POST -d {} ${deploy_hook_vercel_prod}         
 
 workflows:
   version: 2
-  build_and_test:
+  build_test_and_deploy:
     jobs:
       - build
+
       - cypress/install:
+          install-command: yarn install --ignore-engines --frozen-lockfile
+          requires:
+            - build
+
+      - cypress/run:
           install-command: yarn install --ignore-engines --frozen-lockfile
           build: yarn build
           requires:
-            - build
-      - cypress/run:
-          install-command: yarn install --ignore-engines --frozen-lockfile
-          requires:
-            - build
+            - cypress/install
           store_artifacts: true
           record: true
           post-steps:
             - store_test_results:
                 path: cypress/results
           command: yarn e2e:headless
+          parallel: true
+          parallelism: 3
+
       - deploy:
           requires:
             - build
+            - cypress/run
+          filters:
+            branches:
+              only: develop
+    
+      - deploy-prod:
+          requires:
+            - build
+            - cypress/run
+          filters:
+            branches:
+              only: main
