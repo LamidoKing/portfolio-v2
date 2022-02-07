@@ -1,6 +1,12 @@
+[![CircleCI](https://circleci.com/gh/LamidoKing/portfolio-v2/tree/develop.svg?style=svg)](https://circleci.com/gh/LamidoKing/portfolio-v2/tree/develop)
+
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ee5b4e6ea6d641b386f708bec368138e)](https://www.codacy.com/gh/LamidoKing/portfolio-v2/dashboard?utm_source=github.com&utm_medium=referral&utm_content=LamidoKing/portfolio-v2&utm_campaign=Badge_Grade)
 
+[![portfolio](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/simple/dhpeuu/develop&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/dhpeuu/runs)
+
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/245f3233-103c-438b-b077-fd63db4a4dca/deploy-status)](https://app.netlify.com/sites/musing-mclean-8a5807/deploys)
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
