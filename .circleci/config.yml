@@ -34,7 +34,7 @@ jobs:
           command: yarn test:ci --coverage
 
       - store_test_results:
-          path: coverage
+          path: 'coverage/clover.xml, coverage/lcov.info'
 
       - store_artifacts:
           path: coverage
@@ -42,44 +42,6 @@ jobs:
       - coverage-reporter/send_report:
           coverage-reports: 'coverage/clover.xml, coverage/lcov.info'
           project-token: e269adafdb06498187ba1cdc6279ed73
-
-  cypress-test:
-    docker:
-      - image: cypress/base:14.16.0
-        environment:
-          ## this enables colors in the output
-          TERM: xterm
-    working_directory: ~/app
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v1-deps-{{ .Branch }}
-            - v1-deps
-      - run:
-          name: Install Dependencies
-          command: yarn install --ignore-engines --frozen-lockfile
-      - save_cache:
-          key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
-          paths:
-            - ~/.cache ## cache both yarn and Cypress!
-      - run: yarn build
-      - run: yarn e2e:headless --record --key 5c56fb17-16f7-4777-a451-2cac45b511ee
-      - run:
-          name: Run test
-          command: yarn test:ci --coverage
-
-      - store_test_results:
-          path: coverage
-
-      - store_artifacts:
-          path: coverage
-
-      - coverage-reporter/send_report:
-          coverage-reports: 'coverage/clover.xml, coverage/lcov.info'
-          project-token: e269adafdb06498187ba1cdc6279ed73
-
 
   deploy:
     machine:
@@ -97,11 +59,9 @@ jobs:
 
 workflows:
   version: 2
-  build_and_test:
+  build_test_and_deploy:
     jobs:
       - build
-      - cypress-test
-
       - cypress/install:
           install-command: yarn install --ignore-engines --frozen-lockfile
           requires:
@@ -122,3 +82,4 @@ workflows:
       - deploy:
           requires:
             - build
+            - cypress/run
