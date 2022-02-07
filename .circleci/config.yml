@@ -26,10 +26,6 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run:
-          name: Build App
-          command: yarn build
-
-      - run:
           name: Run Lint
           command: yarn eslint
 
@@ -70,8 +66,9 @@ workflows:
             - build
       - cypress/run:
           install-command: yarn install --ignore-engines --frozen-lockfile
+          build: yarn build
           requires:
-            - build
+            - cypress/install
           store_artifacts: true
           record: true
           post-steps:
