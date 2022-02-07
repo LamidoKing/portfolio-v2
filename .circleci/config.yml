@@ -25,10 +25,30 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
+
+  lint:
+    docker:
+      - image: circleci/node:12
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
       - run:
           name: Run Lint
           command: yarn eslint
 
+      - run:
+          name: Run test
+          command: yarn test:ci --coverage
+
+  unit-test:
+    docker:
+      - image: circleci/node:12
+
+    working_directory: ~/repo
+
+    steps:
       - run:
           name: Run test
           command: yarn test:ci --coverage
@@ -41,9 +61,7 @@ jobs:
 
       - coverage-reporter/send_report:
           coverage-reports: 'coverage/clover.xml, coverage/lcov.info'
-          project-token: e269adafdb06498187ba1cdc6279ed73
-  
-   
+          project-token: e269adafdb06498187ba1cdc6279ed73   
 
   deploy:
     machine:
@@ -59,11 +77,18 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - lint:
+          requires:
+            - build
+      - unit-test:
+          requires:
+            - build
       - cypress/install:
           install-command: yarn install --ignore-engines --frozen-lockfile
           requires:
             - build
       - cypress/run:
+          install-command: yarn install --ignore-engines --frozen-lockfile
           build: yarn build
           requires:
             - cypress/install
