@@ -61,11 +61,9 @@ workflows:
       - build
       - cypress/install:
           install-command: yarn install --ignore-engines --frozen-lockfile
-          build: yarn build
           requires:
             - build
       - cypress/run:
-          install-command: yarn install --ignore-engines --frozen-lockfile
           build: yarn build
           requires:
             - cypress/install
