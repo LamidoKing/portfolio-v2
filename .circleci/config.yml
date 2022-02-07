@@ -11,9 +11,6 @@ jobs:
 
     steps:
       - checkout
-      - cypress/install:
-          install-command: yarn install --ignore-engines --frozen-lockfile
-          build: yarn build
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
