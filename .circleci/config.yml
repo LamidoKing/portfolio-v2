@@ -65,7 +65,20 @@ jobs:
           paths:
             - ~/.cache ## cache both yarn and Cypress!
       - run: yarn build
-      - run: yarn e2e:headless
+      - run: yarn e2e:headless --record --key 5c56fb17-16f7-4777-a451-2cac45b511ee
+      - run:
+          name: Run test
+          command: yarn test:ci --coverage
+
+      - store_test_results:
+          path: coverage
+
+      - store_artifacts:
+          path: coverage
+
+      - coverage-reporter/send_report:
+          coverage-reports: 'coverage/clover.xml, coverage/lcov.info'
+          project-token: e269adafdb06498187ba1cdc6279ed73
 
 
   deploy:
