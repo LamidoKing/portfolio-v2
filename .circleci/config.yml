@@ -96,7 +96,9 @@ workflows:
           requires:
             - build
             - cypress/run
-
+          filters:
+            branches:
+              only: develop
     
       - deploy-prod:
           requires:
