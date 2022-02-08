@@ -54,7 +54,7 @@ jobs:
 
       - run:
           name: Vercel Deploy
-          command: curl -X POST -d {} ${deploy_hook_vercel}
+          command: curl -X POST -k -d {} ${deploy_hook_vercel}
 
   deploy-prod:
     machine:
@@ -67,7 +67,7 @@ jobs:
 
       - run:
           name: Vercel Deploy
-          command: curl -X POST -d {} ${deploy_hook_vercel_prod}         
+          command: curl -X POST -k -d {} ${deploy_hook_vercel_prod}         
 
 workflows:
   version: 2
@@ -96,9 +96,7 @@ workflows:
           requires:
             - build
             - cypress/run
-          filters:
-            branches:
-              only: develop
+
     
       - deploy-prod:
           requires:
